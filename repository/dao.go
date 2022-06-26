@@ -3,7 +3,9 @@ package repository
 import (
 	"database/sql"
 
+	"github.com/Masterminds/squirrel"
 	"github.com/bruceneco/party-invites/utils"
+	_ "github.com/glebarez/go-sqlite"
 )
 
 type DAO interface {
@@ -15,6 +17,9 @@ var DB *sql.DB
 
 type dao struct{}
 
+func pgQb() squirrel.StatementBuilderType {
+	return squirrel.StatementBuilder.PlaceholderFormat(squirrel.Dollar).RunWith(DB)
+}
 func NewDAO() DAO {
 	return &dao{}
 }

@@ -9,46 +9,35 @@ import (
 	"github.com/gorilla/mux"
 )
 
-var cfg *utils.Config
-var sm http.Handler
-
 func main() {
-	stepLog()
-	stepEnv()
-	stepDB()
-	stepServer()
-	stepListenAndServe()
-}
-func stepDB() {
-	fp := "./db.sqlite"
-	repository.NewDB(fp)
-}
-
-func stepLog() {
 	utils.InitLogger()
-}
 
-func stepEnv() {
-	var err error
-	cfg, err = utils.LoadConfig()
+	cfg, err := utils.LoadConfig()
 	if err != nil {
 		utils.ErrorLog.Fatalln(err)
 	}
-}
 
-func stepServer() {
+	fp := "./db.sqlite"
+	repository.NewDB(fp)
+	dao := repository.NewDAO()
+
 	sm := mux.NewRouter()
 
 	sm.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("Hello, Gopher!"))
+		gq := dao.NewGuestQuery()
+		id, err := gq.NewGuest()
+		if err != nil {
+			http.Error(w, fmt.Sprintf("%v", err), http.StatusBadRequest)
+			utils.ErrorLog.Print(err)
+			return
+		}
+		w.Write([]byte(string(id)))
 	})
-}
 
-func stepListenAndServe() {
 	host := cfg.Server.Host
 	port := cfg.Server.Port
 	utils.InfoLog.Printf("Server started at %s:%s\n", host, port)
-	err := http.ListenAndServe(fmt.Sprintf("%s:%s", host, port), sm)
+	err = http.ListenAndServe(fmt.Sprintf("%s:%s", host, port), sm)
 	if err != nil {
 		utils.ErrorLog.Fatalln(err)
 	}
