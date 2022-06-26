@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/bruceneco/party-invites/repository"
 	"github.com/bruceneco/party-invites/utils"
 	"github.com/gorilla/mux"
 )
@@ -14,8 +15,13 @@ var sm http.Handler
 func main() {
 	stepLog()
 	stepEnv()
+	stepDB()
 	stepServer()
 	stepListenAndServe()
+}
+func stepDB() {
+	fp := "./db.sqlite"
+	repository.NewDB(fp)
 }
 
 func stepLog() {
