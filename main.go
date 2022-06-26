@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/bruceneco/party-invites/handler"
 	"github.com/bruceneco/party-invites/repository"
 	"github.com/bruceneco/party-invites/utils"
 	"github.com/gorilla/mux"
@@ -19,20 +20,10 @@ func main() {
 
 	fp := "./db.sqlite"
 	repository.NewDB(fp)
-	dao := repository.NewDAO()
 
 	sm := mux.NewRouter()
 
-	sm.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		gq := dao.NewGuestQuery()
-		id, err := gq.NewGuest()
-		if err != nil {
-			http.Error(w, fmt.Sprintf("%v", err), http.StatusBadRequest)
-			utils.ErrorLog.Print(err)
-			return
-		}
-		w.Write([]byte(string(id)))
-	})
+	handler.NewGuestHandler(sm.PathPrefix("/guest").Subrouter())
 
 	host := cfg.Server.Host
 	port := cfg.Server.Port
