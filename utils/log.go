@@ -13,8 +13,7 @@ var (
 
 func InitLogger() {
 	flags := log.Default().Flags()
-	InfoLog = log.New(os.Stdout, "[INFO]\t", flags)
-	WarningLog = log.New(os.Stdout, "[WARNING]\t", flags)
-	ErrorLog = log.New(os.Stdout, "[ERROR]\t", flags)
-
+	InfoLog = log.New(os.Stdout, "[INFO]\t", flags|log.Llongfile)
+	WarningLog = log.New(os.Stdout, "[WARNING]\t", flags|log.Llongfile)
+	ErrorLog = log.New(os.Stdout, "[ERROR]\t", flags|log.Llongfile)
 }
