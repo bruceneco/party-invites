@@ -21,7 +21,7 @@ func main() {
 	fp := "./db.sqlite"
 	repository.NewDB(fp)
 
-	sm := mux.NewRouter()
+	sm := mux.NewRouter().StrictSlash(true)
 
 	handler.NewGuestHandler(sm.PathPrefix("/guest").Subrouter())
 
