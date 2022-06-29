@@ -1,7 +1,7 @@
 package dto
 
 type Guest struct {
-	ID       int
-	Name     string
-	InviteID int
+	ID       int    `json:"id"`
+	Name     string `json:"name"`
+	InviteID int    `json:"invite_id"`
 }
