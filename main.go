@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/bruceneco/party-invites/service"
 	"net/http"
 
 	"github.com/bruceneco/party-invites/handler"
@@ -17,18 +18,24 @@ func main() {
 	if err != nil {
 		utils.ErrorLog.Fatalln(err)
 	}
+
 	// Repo
 	fp := "./db.sqlite"
 	repository.NewDB(fp)
 	dao := repository.NewDAO()
+
 	// Services
 	guestService := service.NewGuestService(dao)
 	sp := service.NewServiceProvider(guestService)
 
+	// Router
 	sm := mux.NewRouter().StrictSlash(true)
 
-	handler.NewGuestHandler(sm.PathPrefix("/guest").Subrouter())
+	// Handlers
+	guestHandler := handler.NewGuestHandler(sp)
+	guestHandler.Register(sm.PathPrefix("/guest").Subrouter())
 
+	// Server
 	host := cfg.Server.Host
 	port := cfg.Server.Port
 	utils.InfoLog.Printf("Server started at %s:%s\n", host, port)
