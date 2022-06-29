@@ -4,7 +4,6 @@ import (
 	"github.com/bruceneco/party-invites/datastruct"
 	"github.com/bruceneco/party-invites/dto"
 	"github.com/bruceneco/party-invites/repository"
-	"github.com/bruceneco/party-invites/utils"
 )
 
 type GuestService interface {
@@ -26,7 +25,6 @@ func (gs *guestService) GetGuest(id int) (g *dto.Guest, err error) {
 	if err != nil {
 		return
 	}
-	utils.InfoLog.Print(guestGot.InviteID.Valid)
 	g = &dto.Guest{
 		ID:       guestGot.ID,
 		Name:     guestGot.Name,
