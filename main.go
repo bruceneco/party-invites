@@ -17,9 +17,13 @@ func main() {
 	if err != nil {
 		utils.ErrorLog.Fatalln(err)
 	}
-
+	// Repo
 	fp := "./db.sqlite"
 	repository.NewDB(fp)
+	dao := repository.NewDAO()
+	// Services
+	guestService := service.NewGuestService(dao)
+	sp := service.NewServiceProvider(guestService)
 
 	sm := mux.NewRouter().StrictSlash(true)
 
