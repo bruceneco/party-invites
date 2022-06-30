@@ -1,0 +1,82 @@
+basePath: /
+consumes:
+- application/json
+definitions:
+  Guest:
+    properties:
+      id:
+        format: int64
+        type: integer
+        x-go-name: ID
+      invite_id:
+        format: int64
+        type: integer
+        x-go-name: InviteID
+      name:
+        type: string
+        x-go-name: Name
+    type: object
+    x-go-package: github.com/bruceneco/party-invites/dto
+info:
+  contact:
+    email: bruce.neco3@outlook.com
+    name: Bruce Neco
+  description: This application will manage invites for a party.
+  title: Party Invites API.
+  version: 0.0.1
+paths:
+  /guests:
+    get:
+      operationId: guestList
+      produces:
+      - application/json
+      responses:
+        "200":
+          $ref: '#/responses/getGuestsRes'
+        "422":
+          $ref: '#/responses/validationError'
+        default:
+          $ref: '#/responses/genericError'
+      tags:
+      - guests
+  /guests/{id}:
+    get:
+      operationId: guestById
+      produces:
+      - application/json
+      responses:
+        "200":
+          $ref: '#/responses/getGuestByIdRes'
+        "422":
+          $ref: '#/responses/validationError'
+        default:
+          $ref: '#/responses/genericError'
+      tags:
+      - guests
+produces:
+- application/json
+responses:
+  genericError:
+    description: ""
+    headers:
+      Body:
+        type: string
+  getGuestByIdRes:
+    description: ""
+    schema:
+      $ref: '#/definitions/Guest'
+  getGuestsRes:
+    description: ""
+    schema:
+      items:
+        $ref: '#/definitions/Guest'
+      type: array
+  validationError:
+    description: ""
+    headers:
+      Body:
+        type: string
+schemes:
+- http
+- https
+swagger: "2.0"

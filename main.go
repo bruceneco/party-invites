@@ -8,6 +8,7 @@ import (
 	"github.com/bruceneco/party-invites/handler"
 	"github.com/bruceneco/party-invites/repository"
 	"github.com/bruceneco/party-invites/utils"
+	"github.com/go-openapi/runtime/middleware"
 	"github.com/gorilla/mux"
 )
 
@@ -30,6 +31,12 @@ func main() {
 
 	// Router
 	sm := mux.NewRouter().StrictSlash(true)
+
+	// Docs
+	opts := middleware.RedocOpts{SpecURL: "/swagger.yaml"}
+	swaggerHandler := middleware.Redoc(opts, nil)
+	sm.Handle("/docs", swaggerHandler)
+	sm.Handle("/swagger.yaml", http.FileServer(http.Dir("./")))
 
 	// Handlers
 	guestHandler := handler.NewGuestHandler(sp)
