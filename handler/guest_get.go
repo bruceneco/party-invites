@@ -47,7 +47,7 @@ type _getGuestByIdRes struct {
 	Body dto.Guest
 }
 
-// swagger:route GET /guests/{id} guests guestList
+// swagger:route GET /guests/{id} guests guestById
 //
 //     Produces:
 //     - application/json
