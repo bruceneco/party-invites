@@ -10,6 +10,21 @@ import (
 	"strconv"
 )
 
+// swagger:response getGuestsRes
+type _getGuestsRes struct {
+	//in:body
+	Body []dto.Guest
+}
+
+// swagger:route GET /guests guests guestList
+//
+//     Produces:
+//     - application/json
+//
+//     Responses:
+//       default: genericError
+//       200: getGuestsRes
+//       422: validationError
 func (gh *guestHandler) getGuests(w http.ResponseWriter, _ *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
@@ -26,6 +41,21 @@ func (gh *guestHandler) getGuests(w http.ResponseWriter, _ *http.Request) {
 	}
 }
 
+// swagger:response getGuestByIdRes
+type _getGuestByIdRes struct {
+	//in:body
+	Body dto.Guest
+}
+
+// swagger:route GET /guests/{id} guests guestList
+//
+//     Produces:
+//     - application/json
+//
+//     Responses:
+//       default: genericError
+//       200: getGuestByIdRes
+//       422: validationError
 func (gh *guestHandler) getGuestById(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	vars := mux.Vars(r)
